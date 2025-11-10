@@ -1,0 +1,66 @@
+[
+    {
+        "code" : "NEG_DISCOUNT",
+        "discount_perc" : -2,
+        "min_distance" : 0,
+        "max_distance" : 200,
+        "min_weight" : 70,
+        "max_weight" : 200
+    },
+    {
+        "code" : "NEG_MIN_DISTANCE",
+        "discount_perc" : 7,
+        "min_distance" : -2,
+        "max_distance" : 151,
+        "min_weight" : 60,
+        "max_weight" : 250
+    },
+    {
+        "code" : "NEG_MAX_DISTANCE",
+        "discount_perc" : 5,
+        "min_distance" : 50,
+        "max_distance" : -2,
+        "min_weight" : 10,
+        "max_weight" : 150
+    },
+    {
+        "code" : "NEG_MIN_WEIGHT",
+        "discount_perc" : 7,
+        "min_distance" : 50,
+        "max_distance" : 151,
+        "min_weight" : -2,
+        "max_weight" : 250
+    },
+    {
+        "code" : "NEG_MAX_WEIGHT",
+        "discount_perc" : 5,
+        "min_distance" : 50,
+        "max_distance" : 151,
+        "min_weight" : 10,
+        "max_weight" : -2
+    },
+    {
+        "code" : "INALID_RANGE_WEIGHT",
+        "discount_perc" : 5,
+        "min_distance" : 50,
+        "max_distance" : 150,
+        "min_weight" : 180,
+        "max_weight" : 150
+    },
+    {
+        "code" : "INALID_RANGE_DISTANCE",
+        "discount_perc" : 5,
+        "min_distance" : 50,
+        "max_distance" : 25,
+        "min_weight" : 10,
+        "max_weight" : 150
+    },
+    {
+        "code" : "INALID_DISCOUNT",
+        "discount_perc" : 105,
+        "min_distance" : 50,
+        "max_distance" : 151,
+        "min_weight" : 10,
+        "max_weight" : 150
+    }
+]
