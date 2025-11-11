@@ -244,6 +244,21 @@ class Delivery
         return compositeObjects;
     }
 
+    static auto buildAvailability(std::vector<Package> &packages, int max_carriable_weight, int &no_of_packages) -> std::vector<bool>
+    {
+        std::vector<bool> availability (packages.size(), false);
+
+        for (size_t i = 0; i < packages.size(); i++)
+        {
+            if (packages[i].getWeight() <= max_carriable_weight)
+            {
+                availability[i] = true;
+                no_of_packages++;
+            }
+        }
+        return availability;
+    }
+
     static void kp(std::vector<compositeValue> &compositeObjects,
                    int max_carriable_weight,
                    std::vector<bool> &availability,
@@ -339,9 +354,9 @@ public:
 
     static void Delivery_Time(std::vector<Package> &packages, int no_of_vehicles, int max_speed, int max_carriable_weight)
     {
-        int no_of_packages = packages.size();
+        int no_of_packages = 0;
         std::vector<compositeValue> availableComputations(max_carriable_weight + 1, compositeValue());
-        std::vector<bool> availability(no_of_packages, true);
+        std::vector<bool> availability = std::move(buildAvailability(packages, max_carriable_weight, no_of_packages));
 
         auto agent_queue = std::move(get_agent_queue(no_of_vehicles));
         auto compositeObjects = std::move(get_pre_computed_composite_objects(packages));
@@ -370,7 +385,7 @@ public:
             agent_queue.push(max_agent_busy_time * 2);
 
             no_of_packages -= best.bag.size();
-            
+
             for (auto &&ac : availableComputations)
             {
                 ac.reset();

@@ -314,6 +314,50 @@ void workflow_integration_test_with_weight_tie()
     }
 }
 
+void workflow_integration_test_with_package_weight_greater_than_max_carriable_weight()
+{
+    std::stringstream oss, iss;
+    Delivery::SetUpDelivery("modular\\json_files\\offers.json", false, oss);
+    iss << "100 6\nPKG1 50 30 OFR001\nPKG2 75 125 OFFR0008\nPKG3 201 100 OFFR003\nPKG4 110 60 OFFR002\nPKG5 155 95 NA \nPKG6 60 87 OFFR002 \n3 85 200\n";
+    Delivery::ExecuteWorkflow(iss, oss);
+    std::string output = "";
+    std::array<std::pair<std::string, std::string>, 8> expected_errors =
+        {
+            std::make_pair("PKG1", "PKG1 0.00 750.00 0.35"),
+            std::make_pair("PKG2", "PKG2 0.00 1475.00 1.47"),
+            std::make_pair("PKG3", "PKG3 0.00 2350.00 1.17"),
+            std::make_pair("PKG4", "PKG4 105.00 1395.00 2.92"),
+            std::make_pair("PKG5", "PKG5 0.00 2125.00 1.11"),
+            std::make_pair("PKG6", "PKG6 79.45 1055.55 1.02")};
+
+    int idx = 0;
+
+    std::cout << "Test : workflow_integration_test_with_package_weight_greater_than_max_carriable_weight : " << '\n';
+    bool testFailed = false;
+
+    while (std::getline(oss, output, '\n'))
+    {
+        if (output.compare(expected_errors[idx].second) != 0)
+        {
+            std::cout << "\t Values for Package Id : " << expected_errors[idx].first << " does not Match Expected : " << expected_errors[idx].second << ", Actual : " << output << '\n';
+            testFailed = true;
+        }
+        else
+        {
+            testFailed = false;
+        }
+        idx++;
+    }
+    if (testFailed)
+    {
+        std::cout << "\t Test workflow_integration_test_with_package_weight_greater_than_max_carriable_weight : FAILED" << '\n';
+    }
+    else
+    {
+        std::cout << "\t Test workflow_integration_test_with_package_weight_greater_than_max_carriable_weight : PASSED" << '\n';
+    }
+}
+
 int main()
 {
     malformed_json_offers();
@@ -328,4 +372,5 @@ int main()
     package_time_computation_with_weight_tie();
     workflow_integration_test();
     workflow_integration_test_with_weight_tie();
+    workflow_integration_test_with_package_weight_greater_than_max_carriable_weight();
 }

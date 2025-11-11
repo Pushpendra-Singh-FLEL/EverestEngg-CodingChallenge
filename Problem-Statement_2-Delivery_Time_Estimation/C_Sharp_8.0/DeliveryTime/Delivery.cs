@@ -1,14 +1,6 @@
-﻿using Delivery_Time;
-using DeliveryTime;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using DeliveryTime;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace Delivery_Time
 {
@@ -314,13 +306,17 @@ namespace Delivery_Time
 
         public static void Delivery_Time(List<Package> packages, int no_of_vehicles, int max_speed, int max_carriable_weight)
         {
-            int no_of_packages = packages.Count;
+            int no_of_packages = 0;
             compositeValue[] availableComputations = new compositeValue[max_carriable_weight + 1];
-            bool[] availability = new bool[no_of_packages];
+            bool[] availability = new bool[packages.Count];
 
-            for (int i = 0; i < no_of_packages; i++)
+            for (int i = 0; i < packages.Count; i++)
             {
-                availability[i] = true;
+                if (packages[i].Weight <= max_carriable_weight)
+                {
+                    availability[i] = true;
+                    no_of_packages++;
+                }
             }
 
             var agent_queue = get_agent_queue(no_of_vehicles);
@@ -346,11 +342,7 @@ namespace Delivery_Time
                 {
                     int pkgDeliveryTime = (int)(available_agent + ((float)(((long)packages[idx].Distance) * 100) / max_speed));
                     availability[idx] = false;
-                    if (pkgDeliveryTime > max_agent_busy_time)
-                    {
-                        max_agent_busy_time = pkgDeliveryTime;
-                    }
-                    Console.WriteLine($"{max_agent_busy_time}");
+                    max_agent_busy_time = pkgDeliveryTime;
                     packages[idx].DeliveryTime = (float)(max_agent_busy_time) / 100;
                 }
 

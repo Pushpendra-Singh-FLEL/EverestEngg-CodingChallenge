@@ -117,9 +117,9 @@ void Delivery::ExecuteWorkflow(std::istream &is, std::ostream &os)
 
 void Delivery::Delivery_Time(std::vector<Package> &packages, int no_of_vehicles, int max_speed, int max_carriable_weight)
 {
-    int no_of_packages = packages.size();
+    int no_of_packages = 0;
     std::vector<compositeValue> availableComputations(max_carriable_weight + 1, compositeValue());
-    std::vector<bool> availability(no_of_packages, true);
+    std::vector<bool> availability = std::move(buildAvailability(packages, max_carriable_weight, no_of_packages));
 
     auto agent_queue = std::move(get_agent_queue(no_of_vehicles));
     auto compositeObjects = std::move(get_pre_computed_composite_objects(packages));
@@ -148,7 +148,7 @@ void Delivery::Delivery_Time(std::vector<Package> &packages, int no_of_vehicles,
         agent_queue.push(max_agent_busy_time * 2);
 
         no_of_packages -= best.bag.size();
-        
+
         for (auto &&ac : availableComputations)
         {
             ac.reset();

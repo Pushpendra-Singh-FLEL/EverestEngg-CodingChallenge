@@ -112,11 +112,25 @@ class Delivery
         return compositeObjects;
     }
 
+    static auto buildAvailability(std::vector<Package> &packages, int max_carriable_weight, int &no_of_packages) -> std::vector<bool>
+    {
+        std::vector<bool> availability(packages.size(), false);
+
+        for (size_t i = 0; i < packages.size(); i++)
+        {
+            if (packages[i].getWeight() <= max_carriable_weight)
+            {
+                availability[i] = true;
+                no_of_packages++;
+            }
+        }
+        return availability;
+    }
+
     static void kp(std::vector<compositeValue> &compositeObjects,
-        int max_carriable_weight,
-        std::vector<bool> &availability,
-        std::vector<compositeValue> &availableComputations        
-    );
+                   int max_carriable_weight,
+                   std::vector<bool> &availability,
+                   std::vector<compositeValue> &availableComputations);
 
 public:
     static void SetUpDelivery(std::string filePath = "json_files\\offers.json", bool useFileLogging = true, std::ostream &out = std::cout);
